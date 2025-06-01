@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando...</title>
+    
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){
+            w[l]=w[l]||[]; w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+            var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';
+            j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+            f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MSKFZRDL');
+    </script>
+    <!-- End Google Tag Manager -->
+</head>
+<body>
+    <!-- GTM noscript fallback -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MSKFZRDL"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    
+    <script>
+        // Pega todos os parâmetros da URL (query string + fragmento)
+        const currentParams = window.location.search + window.location.hash;
+
+        // Espera GTM definir redirectURL por até 2 segundos
+        function waitForRedirectURL(callback, timeout = 2000) {
+            const start = Date.now();
+            const interval = setInterval(() => {
+                if (typeof window.redirectURL === 'string' && window.redirectURL.trim() !== '') {
+                    clearInterval(interval);
+                    callback(window.redirectURL.trim());
+                } else if (Date.now() - start > timeout) {
+                    clearInterval(interval);
+                    callback(null);
+                }
+            }, 50);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            waitForRedirectURL((url) => {
+                if (url) {
+                    const finalURL = url + currentParams;
+                    window.location.replace(finalURL); // Substitui sem deixar no histórico
+                } else {
+                    console.warn('redirectURL não definido pelo GTM.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
